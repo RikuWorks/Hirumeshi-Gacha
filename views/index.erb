@@ -9,13 +9,11 @@
   <body>
     <div class="container">
       <h1><%= @title %></h1>
-      <p>What's for dinner?</p>
-
       <form action="cast" method="post">
         <div class="mb-3">
           <% Choices.each do |id, text| %>
             <div class="form-check">
-              <input type="radio" name="vote" value="<%= id %>" class="form-check-input" id="vote_<%= id %>" />
+              <input type="checkbox" name="vote" value="<%= id %>" class="form-check-input" id="vote_<%= id %>" />
               <label class="form-check-label" for="vote_<%= id %>">
                 <%= text %>
               </label>
@@ -23,7 +21,7 @@
           <% end %>
         </div>
 
-        <button type="submit" class="btn btn-primary">Cast this vote!</button>
+        <button type="submit" class="btn btn-primary">抽選</button>
       </form>
     </div>
   </body>
