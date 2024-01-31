@@ -1,28 +1,54 @@
 require 'sinatra'
+require 'pg' 
+
+def conn
+  @conn ||= PG.connect(dbname: 'postgres')
+end
+
+configure do
+  result = conn.exec("SELECT * FROM information_schema.tables WHERE table_name = 'hirumeshi'")
+  conn.exec('CREATE TABLE hirumeshi (shop varchar(255), egg boolean,seafood boolean,bourgeois boolean,junky boolean)') if result.values.empty?
+  #conn.exec("INSERT INTO hirumeshi VALUES ('A',true,false,false,false);")
+end
+
 get '/' do
     @title = 'Hirumeshi-Gacha'
     erb :index
 end
 
+
+
+
 post '/gacha' do
-    meshiList = [["A", "1", "0","0","0"], ["B", "0", "1","0","0"],["C", "0", "0","1","0"],["D", "0", "0","0","1"]]
-    nmeshiList=[]
-    @title = 'Todays Hirumeshi'
+    sql_process = "SELECT shop FROM hirumeshi WHERE"
+    egg_process = " egg=false AND "
+    seafood_process = " seafood=false AND "
+    bourgeois_process = " bourgeois=false AND "
+    junky_process = " junky=false AND "
+    shop_process = " shop!=''"
+
     egg = params['EGG']
     seafood = params['SEA']
     bourgeois = params['BOU']
     junky = params['JNK']
-    filter = [egg.to_i,seafood.to_i,bourgeois.to_i,junky.to_i]
-    p filter
-    meshiList.each do |p_a|
-      tf = p_a[1].to_i*filter[0]+p_a[2].to_i*filter[1]+p_a[3].to_i*filter[2]+p_a[4].to_i*filter[3]
-      if tf==0 then
-        nmeshiList.push(p_a)
-      end
+    if egg
+      sql_process=sql_process+egg_process
     end
-    p nmeshiList
+    if seafood
+      sql_process=sql_process+seafood_process
+    end
+    if bourgeois
+      sql_process=sql_process+ bourgeois_process
+    end
+    if junky
+      sql_process=sql_process+junky_process
+    end
+    sql_process=sql_process+shop_process
+    meshiList=conn.exec(sql_process)
+    
+    @title = 'Todays Hirumeshi'
+    nmeshiList = meshiList.values
     list_size = nmeshiList.size
-    p list_size
     meshi = rand(list_size)
     @meshi = nmeshiList[meshi][0]
     erb :gacha
