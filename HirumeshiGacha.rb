@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'yaml/store'
 get '/' do
     @title = 'Hirumeshi-Gacha'
     erb :index
@@ -12,9 +11,9 @@ post '/gacha' do
     p params['BOU']
     p params['JNK']
     erb :gacha
-  end
+end
 
-Choices = {
+CHOICES = {
   'EGG' => 'たまごフィルタ',
   'SEA' => '海鮮フィルタ',
   'BOU' => 'ブルジョアジーフィルタ',
