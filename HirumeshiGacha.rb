@@ -1,5 +1,11 @@
 require 'sinatra'
 require 'pg' 
+require "json"
+require 'rack/contrib'
+require "sinatra/json"
+
+
+use Rack::JSONBodyParser, verbs: ['POST']
 
 def conn
   @conn || = PG.connect(dbname: 'postgres')
@@ -16,6 +22,7 @@ get '/' do
   erb :index
 end
 
+
 post '/gacha' do
   sql_process = "SELECT shop FROM hirumeshi WHERE "
   egg_process = " egg=false AND "
@@ -23,7 +30,6 @@ post '/gacha' do
   bourgeois_process = " bourgeois=false AND "
   junky_process = " junky=false AND "
   shop_process = " shop!=''"
-
   egg = params['EGG']
   seafood = params['SEA']
   bourgeois = params['BOU']
