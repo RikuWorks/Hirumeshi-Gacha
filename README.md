@@ -26,4 +26,4 @@
 ## 環境
 
 sinatra  
-ruby 2.7.8p225
+ruby 3.3.0
