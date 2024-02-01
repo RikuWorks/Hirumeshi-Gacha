@@ -14,14 +14,17 @@ end
 configure do
   result = conn.exec("SELECT * FROM information_schema.tables WHERE table_name = 'hirumeshi'")
   conn.exec('CREATE TABLE hirumeshi (shop varchar(255), egg boolean,seafood boolean,bourgeois boolean,junky boolean)') if result.values.empty?
-  conn.exec("INSERT INTO hirumeshi VALUES ('A',true,false,false,false);")
+  conn.exec("INSERT INTO hirumeshi VALUES ('かかん',false,false,true,false);")
+  conn.exec("INSERT INTO hirumeshi VALUES ('静雨庵',false,false,false,true);")
+  conn.exec("INSERT INTO hirumeshi VALUES ('アカリダイニング',false,false,false,true);")
+  conn.exec("INSERT INTO hirumeshi VALUES ('ぺぺ',false,false,false,false);")
+  conn.exec("INSERT INTO hirumeshi VALUES ('尾崎',false,true,false,false);")
 end
 
 get '/' do
   @title = 'Hirumeshi-Gacha'
   erb :index
 end
-
 
 post '/gacha' do
   mediaType = request.media_type
@@ -49,7 +52,7 @@ post '/gacha' do
   list_size = nmeshiList.size
   meshi = rand(list_size)
   temp = []
-  temp=" "
+  temp = " "
   if list_size!=0
       temp=nmeshiList[meshi][0]
   end
@@ -68,3 +71,4 @@ CHOICES = {
   'BOU' => 'ブルジョアジーフィルタ',
   'JNK' => 'ジャンキーフィルタ',
 }
+
