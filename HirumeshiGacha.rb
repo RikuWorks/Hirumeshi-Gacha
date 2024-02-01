@@ -1,5 +1,11 @@
 require 'sinatra'
 require 'pg' 
+require "json"
+require 'rack/contrib'
+require "sinatra/json"
+
+
+use Rack::JSONBodyParser, verbs: ['POST']
 
 def conn
   @conn ||= PG.connect(dbname: 'postgres')
@@ -8,7 +14,7 @@ end
 configure do
   result = conn.exec("SELECT * FROM information_schema.tables WHERE table_name = 'hirumeshi'")
   conn.exec('CREATE TABLE hirumeshi (shop varchar(255), egg boolean,seafood boolean,bourgeois boolean,junky boolean)') if result.values.empty?
-  #conn.exec("INSERT INTO hirumeshi VALUES ('A',true,false,false,false);")
+  conn.exec("INSERT INTO hirumeshi VALUES ('A',true,false,false,false);")
 end
 
 get '/' do
@@ -16,8 +22,11 @@ get '/' do
   erb :index
 end
 
+
 post '/gacha' do
-  sql_process = "SELECT shop FROM hirumeshi WHERE "
+  mediaType = request.media_type
+  p mediaType
+  sql_process = "SELECT shop FROM hirumeshi WHERE"
   egg_process = " egg=false AND "
   seafood_process = " seafood=false AND "
   bourgeois_process = " bourgeois=false AND "
@@ -35,8 +44,19 @@ post '/gacha' do
   nmeshiList = meshiList.values
   list_size = nmeshiList.size
   meshi = rand(list_size)
-  @meshi = nmeshiList[meshi][0]
-  erb :gacha
+  temp = []
+  temp=" "
+  if list_size!=0
+      temp=nmeshiList[meshi][0]
+  end
+  @meshi = temp
+
+  if mediaType == "application/json"
+    data ={lunch:@meshi}
+    json data
+  else
+    erb :gacha
+  end
 end
 CHOICES = {
   'EGG' => 'たまごフィルタ',

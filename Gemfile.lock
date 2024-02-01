@@ -7,6 +7,8 @@ GEM
       ruby2_keywords (~> 0.0.1)
     pg (1.5.4)
     rack (3.0.8)
+    rack-contrib (2.4.0)
+      rack (< 4)
     rack-protection (4.0.0)
       base64 (>= 0.1.0)
       rack (>= 3.0.0, < 4)
@@ -32,6 +34,7 @@ PLATFORMS
 
 DEPENDENCIES
   pg
+  rack-contrib (~> 2.4)
   sinatra
   sinatra-contrib
 
