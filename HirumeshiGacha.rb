@@ -24,7 +24,9 @@ end
 
 
 post '/gacha' do
-  sql_process = "SELECT shop FROM hirumeshi WHERE "
+  mediaType = request.media_type
+  p mediaType
+  sql_process = "SELECT shop FROM hirumeshi WHERE"
   egg_process = " egg=false AND "
   seafood_process = " seafood=false AND "
   bourgeois_process = " bourgeois=false AND "
@@ -47,7 +49,12 @@ post '/gacha' do
   list_size = nmeshiList.size
   meshi = rand(list_size)
   @meshi = nmeshiList[meshi][0]
-  erb :gacha
+  if mediaType == "application/json"
+    data ={lunch:@meshi}
+    json data
+  else
+    erb :gacha
+  end
 end
 CHOICES = {
   'EGG' => 'たまごフィルタ',
