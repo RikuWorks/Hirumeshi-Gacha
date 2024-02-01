@@ -2,7 +2,7 @@ require 'sinatra'
 require 'pg' 
 
 def conn
-  @conn || = PG.connect(dbname: 'postgres')
+  @conn ||= PG.connect(dbname: 'postgres')
 end
 
 configure do
