@@ -29,10 +29,10 @@ post '/gacha' do
   bourgeois = params['BOU']
   junky = params['JNK']
   
-  sql_process = sql_process + egg_process if egg?
-  sql_process = sql_process + seafood_process if seafood?
-  sql_process = sql_process + bourgeois_process if bourgeois?
-  sql_process = sql_process + junky_process if junky?
+  sql_process = sql_process + egg_process if egg
+  sql_process = sql_process + seafood_process if seafood
+  sql_process = sql_process + bourgeois_process if bourgeois
+  sql_process = sql_process + junky_process if junky
   sql_process = sql_process + shop_process
   meshiList = conn.exec(sql_process)
   
