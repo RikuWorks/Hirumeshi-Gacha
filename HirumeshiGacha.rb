@@ -2,7 +2,7 @@ require 'sinatra'
 require 'pg' 
 
 def conn
-  @conn ||= PG.connect(dbname: 'postgres')
+  @conn || = PG.connect(dbname: 'postgres')
 end
 
 configure do
@@ -16,9 +16,6 @@ get '/' do
   erb :index
 end
 
-
-
-
 post '/gacha' do
   sql_process = "SELECT shop FROM hirumeshi WHERE"
   egg_process = " egg=false AND "
@@ -31,18 +28,11 @@ post '/gacha' do
   seafood = params['SEA']
   bourgeois = params['BOU']
   junky = params['JNK']
-  if egg
-    sql_process = sql_process + egg_process
-  end
-  if seafood
-    sql_process = sql_process + seafood_process
-  end
-  if bourgeois
-    sql_process = sql_process + bourgeois_process
-  end
-  if junky
-    sql_process = sql_process + junky_process
-  end
+  
+  sql_process = sql_process + egg_process if egg?
+  sql_process = sql_process + seafood_process if seafood?
+  sql_process = sql_process + bourgeois_process if bourgeois?
+  sql_process = sql_process + junky_process if junky?
   sql_process = sql_process + shop_process
   meshiList = conn.exec(sql_process)
   
