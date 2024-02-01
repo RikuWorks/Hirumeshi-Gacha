@@ -17,7 +17,7 @@ get '/' do
 end
 
 post '/gacha' do
-  sql_process = "SELECT shop FROM hirumeshi WHERE"
+  sql_process = "SELECT shop FROM hirumeshi WHERE "
   egg_process = " egg=false AND "
   seafood_process = " seafood=false AND "
   bourgeois_process = " bourgeois=false AND "
